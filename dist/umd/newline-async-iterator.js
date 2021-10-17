@@ -8,21 +8,6 @@
 
   var indexOfNewline__default = /*#__PURE__*/_interopDefaultLegacy(indexOfNewline);
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
   function _slicedToArray(arr, i) {
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
@@ -125,8 +110,9 @@
 
   var decodeUTF8$1 = decodeUTF8;
 
+  var hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
   /**
-   * Create a newlinw iterator recognizing CR, LF, and CRLF using the Symbol.iterator interface
+   * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
    *
    * @param string The string to iterate through
    *
@@ -140,10 +126,13 @@
    * ```
    */
 
-  function newlineIterator(iterable) {
+  function newlineIterator(source) {
     var string = "";
     var done = false;
-    var iterator = iterable[Symbol.asyncIterator]();
+    /* c8 ignore start */
+
+    var sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
+    /* c8 ignore stop */
 
     function generateNext() {
       return new Promise(function (resolve, reject) {
@@ -157,7 +146,7 @@
         }
 
         if (done) return resolve([index, skip]);
-        iterator.next().then(function (next) {
+        sourceIterator.next().then(function (next) {
           if (next.done) done = true;
           if (next.value !== undefined) string += decodeUTF8$1(next.value);
           generateNext().then(resolve)["catch"](reject);
@@ -165,7 +154,7 @@
       });
     }
 
-    return _defineProperty({
+    var iterator = {
       next: function next() {
         return new Promise(function (resolve, reject) {
           generateNext().then(function (_ref3) {
@@ -195,9 +184,15 @@
           })["catch"](reject);
         });
       }
-    }, Symbol.asyncIterator, function () {
-      return this;
-    });
+    };
+
+    if (hasIterator) {
+      iterator[Symbol.asyncIterator] = function () {
+        return this;
+      };
+    }
+
+    return iterator;
   }
 
   return newlineIterator;

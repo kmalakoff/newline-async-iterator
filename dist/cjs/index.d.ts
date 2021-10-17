@@ -1,5 +1,5 @@
 /**
- * Create a newlinw iterator recognizing CR, LF, and CRLF using the Symbol.iterator interface
+ * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
  *
  * @param string The string to iterate through
  *
@@ -12,4 +12,4 @@
  * console.log(results); // ["some", "string", "combination"];
  * ```
  */
-export default function newlineIterator(iterable: AsyncIterable<Uint8Array>): AsyncIterableIterator<string>;
+export default function newlineIterator(source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>): AsyncIterableIterator<string>;
