@@ -1,8 +1,10 @@
 import indexOfNewline from "index-of-newline";
 import decodeUTF8 from "./decodeUTF8";
 
+const hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
+
 /**
- * Create a newlinw iterator recognizing CR, LF, and CRLF using the Symbol.iterator interface
+ * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
  *
  * @param string The string to iterate through
  *
@@ -16,10 +18,16 @@ import decodeUTF8 from "./decodeUTF8";
  * ```
  */
 
-export default function newlineIterator(iterable: AsyncIterable<Uint8Array>): AsyncIterableIterator<string> {
+export default function newlineIterator(
+  source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>
+): AsyncIterableIterator<string> {
   let string = "";
   let done = false;
-  const iterator = iterable[Symbol.asyncIterator]();
+
+  /* c8 ignore start */
+  const sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
+  /* c8 ignore stop */
+
   function generateNext(): Promise<number[]> {
     return new Promise(function (resolve, reject) {
       const [index, skip] = indexOfNewline(string, 0, true) as number[];
@@ -27,7 +35,7 @@ export default function newlineIterator(iterable: AsyncIterable<Uint8Array>): As
         if (index !== string.length - 1 || string[index] === "\n") return resolve([index, skip]);
       }
       if (done) return resolve([index, skip]);
-      iterator.next().then(function (next) {
+      sourceIterator.next().then(function (next) {
         if (next.done) done = true;
         if (next.value !== undefined) string += decodeUTF8(next.value);
         generateNext().then(resolve).catch(reject);
@@ -35,7 +43,7 @@ export default function newlineIterator(iterable: AsyncIterable<Uint8Array>): As
     });
   }
 
-  return {
+  const iterator = {
     next(): Promise<IteratorResult<string, boolean>> {
       return new Promise(function (resolve, reject) {
         generateNext()
@@ -53,8 +61,13 @@ export default function newlineIterator(iterable: AsyncIterable<Uint8Array>): As
           .catch(reject);
       });
     },
-    [Symbol.asyncIterator](): AsyncIterator<string> {
+  };
+
+  if (hasIterator) {
+    iterator[Symbol.asyncIterator] = function (): AsyncIterator<string> {
       return this;
-    },
-  } as AsyncIterableIterator<string>;
+    };
+  }
+
+  return iterator as AsyncIterableIterator<string>;
 }
