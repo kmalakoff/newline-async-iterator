@@ -2,7 +2,7 @@
   "extends": "./node_modules/ts-dev-stack/tsconfig.json",
   "compilerOptions": {
     "lib": ["es2015", "dom", "esnext.asynciterable"],
-    "types": ["mocha", "chai", "node"]
+    "types": ["mocha", "node"]
   },
   "exclude": ["node_modules", "dist"],
   "include": ["src"]
