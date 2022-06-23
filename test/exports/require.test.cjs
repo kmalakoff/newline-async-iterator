@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require("../lib/polyfill.cjs");
-const { assert } = require("chai");
+const assert = require("assert");
 const newlineIterator = require("newline-async-iterator");
 const stringIterator = require("../lib/stringIterator.cjs");
 
