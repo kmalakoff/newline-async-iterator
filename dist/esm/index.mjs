@@ -1,5 +1,5 @@
 import indexOfNewline from "index-of-newline";
-import decodeUTF8 from "./decodeUTF8.js";
+import decodeUTF8 from "./decodeUTF8.mjs";
 const hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
 /**
  * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
@@ -78,4 +78,4 @@ export default function newlineIterator(source) {
 
   return iterator;
 }
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=index.mjs.map

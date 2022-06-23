@@ -1,5 +1,5 @@
 import "../lib/polyfill.cjs";
-import { assert } from "chai";
+import assert from "assert";
 import newlineIterator from "newline-async-iterator";
 import stringIterator from "../lib/stringIterator.cjs";
 

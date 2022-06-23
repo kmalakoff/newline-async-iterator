@@ -40,4 +40,4 @@ if (typeof TextDecoder !== "undefined") {
 }
 
 export default decodeUTF8;
-//# sourceMappingURL=decodeUTF8.js.map
+//# sourceMappingURL=decodeUTF8.mjs.map

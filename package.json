@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.mjs",
   "files": [
     "dist"
   ],
@@ -57,14 +57,14 @@
   },
   "devDependencies": {
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.1.8"
+    "ts-dev-stack": "^0.2.1"
   },
   "engines": {
     "node": ">=0.8"
   },
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
+      "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
       "types": "./dist/esm/index.d.ts"
     },

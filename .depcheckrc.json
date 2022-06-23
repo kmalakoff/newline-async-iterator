@@ -1,4 +1,4 @@
 {
   "extends": "./node_modules/ts-dev-stack/.depcheckrc.json",
-  "ignores": ["newline-async-iterator", "@types/*", "@typescript-eslint/*", "eslint-*", "chai", "pinkie-promise"]
+  "ignores": ["newline-async-iterator", "@types/*", "@typescript-eslint/*", "eslint-*", "pinkie-promise"]
 }
