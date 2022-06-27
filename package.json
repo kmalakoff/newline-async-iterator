@@ -1,7 +1,7 @@
 {
   "name": "newline-async-iterator",
   "description": "Line-by-line async iterator for the browser and node",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": {
     "email": "kmalakoff@gmail.com",
     "name": "Kevin Malakoff",
