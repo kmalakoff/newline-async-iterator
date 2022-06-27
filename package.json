@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.3.2"
+    "ts-dev-stack": "^0.3.3"
   },
   "engines": {
     "node": ">=0.8"
