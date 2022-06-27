@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.2.1"
+    "ts-dev-stack": "^0.3.2"
   },
   "engines": {
     "node": ">=0.8"
@@ -66,11 +66,12 @@
     ".": {
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.js",
-      "types": "./dist/esm/index.d.ts"
+      "types": "./dist/types/index.d.ts"
     },
     "./*": "./*"
   },
+  "source": "src/index.ts",
   "type": "module",
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "unpkg": "dist/umd/newline-async-iterator.js"
 }

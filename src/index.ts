@@ -1,7 +1,7 @@
-import indexOfNewline from "index-of-newline";
-import decodeUTF8 from "./decodeUTF8";
+import indexOfNewline from 'index-of-newline';
+import decodeUTF8 from './decodeUTF8.js';
 
-const hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
+const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 
 /**
  * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
@@ -18,10 +18,8 @@ const hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
  * ```
  */
 
-export default function newlineIterator(
-  source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>
-): AsyncIterableIterator<string> {
-  let string = "";
+export default function newlineIterator(source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>): AsyncIterableIterator<string> {
+  let string = '';
   let done = false;
 
   /* c8 ignore start */
@@ -32,7 +30,7 @@ export default function newlineIterator(
     return new Promise(function (resolve, reject) {
       const [index, skip] = indexOfNewline(string, 0, true) as number[];
       if (index >= 0) {
-        if (index !== string.length - 1 || string[index] === "\n") return resolve([index, skip]);
+        if (index !== string.length - 1 || string[index] === '\n') return resolve([index, skip]);
       }
       if (done) return resolve([index, skip]);
       sourceIterator.next().then(function (next) {
@@ -51,7 +49,7 @@ export default function newlineIterator(
             if (index < 0) {
               if (!string.length) return resolve({ value: undefined, done: true });
               const result: IteratorResult<string, boolean> = { value: string, done: false };
-              string = "";
+              string = '';
               return resolve(result);
             }
             const line = string.substr(0, index);
