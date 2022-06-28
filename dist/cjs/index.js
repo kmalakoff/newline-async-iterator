@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 module.exports = newlineIterator;
 var _indexOfNewline = _interopRequireDefault(require("index-of-newline"));
-var _decodeUTF8Js = _interopRequireDefault(require("./decodeUTF8.js"));
+var _decodeUTF8Ts = _interopRequireDefault(require("./decodeUTF8.js"));
 function newlineIterator(source) {
     var string = "";
     var done = false;
@@ -24,7 +24,7 @@ function newlineIterator(source) {
             ]);
             sourceIterator.next().then(function(next) {
                 if (next.done) done = true;
-                if (next.value !== undefined) string += (0, _decodeUTF8Js).default(next.value);
+                if (next.value !== undefined) string += (0, _decodeUTF8Ts).default(next.value);
                 generateNext().then(resolve)["catch"](reject);
             });
         });

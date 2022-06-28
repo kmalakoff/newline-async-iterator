@@ -1,4 +1,5 @@
 import indexOfNewline from 'index-of-newline';
+// @ts-ignore
 import decodeUTF8 from './decodeUTF8.mjs';
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 /**
