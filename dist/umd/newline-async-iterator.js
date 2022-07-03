@@ -132,7 +132,7 @@
                 sourceIterator.next().then(function(next) {
                     if (next.done) done = true;
                     if (next.value !== undefined) string += decodeUTF8$1(next.value);
-                    generateNext().then(resolve).catch(reject);
+                    generateNext().then(resolve)["catch"](reject);
                 });
             });
         }
@@ -159,7 +159,7 @@
                             value: line,
                             done: false
                         });
-                    }).catch(reject);
+                    })["catch"](reject);
                 });
             }
         };
@@ -174,4 +174,3 @@
     return newlineIterator;
 
 }));
-//# sourceMappingURL=newline-async-iterator.js.map
