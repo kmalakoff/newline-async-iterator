@@ -25,7 +25,7 @@ function newlineIterator(source) {
             sourceIterator.next().then(function(next) {
                 if (next.done) done = true;
                 if (next.value !== undefined) string += (0, _decodeUTF8Ts).default(next.value);
-                generateNext().then(resolve)["catch"](reject);
+                generateNext().then(resolve).catch(reject);
             });
         });
     }
@@ -52,7 +52,7 @@ function newlineIterator(source) {
                         value: line,
                         done: false
                     });
-                })["catch"](reject);
+                }).catch(reject);
             });
         }
     };
