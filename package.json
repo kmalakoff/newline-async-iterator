@@ -19,7 +19,6 @@
     "format": "tsds format",
     "lint": "tsds lint",
     "test": "tsds test:node && tsds test:browser",
-    "test:engines": "tsds test:engines",
     "version": "tsds version"
   },
   "homepage": "https://github.com/kmalakoff/newline-async-iterator#README.md",
@@ -57,7 +56,7 @@
   },
   "devDependencies": {
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.4.1"
+    "ts-dev-stack": "^0.5.1"
   },
   "engines": {
     "node": ">=0.8"
