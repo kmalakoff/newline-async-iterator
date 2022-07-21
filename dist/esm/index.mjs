@@ -21,7 +21,9 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
     /* c8 ignore start */ const sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
     /* c8 ignore stop */ function generateNext() {
         return new Promise(function(resolve, reject) {
-            const [index, skip] = indexOfNewline(string, 0, true);
+            const args = indexOfNewline(string, 0, true);
+            const index = args[0];
+            const skip = args[1];
             if (index >= 0) {
                 if (index !== string.length - 1 || string[index] === '\n') return resolve([
                     index,
@@ -42,7 +44,9 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
     const iterator = {
         next () {
             return new Promise(function(resolve, reject) {
-                generateNext().then(function([index, skip]) {
+                generateNext().then(function(args) {
+                    const index = args[0];
+                    const skip = args[1];
                     if (index < 0) {
                         if (!string.length) return resolve({
                             value: undefined,

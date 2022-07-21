@@ -29,7 +29,9 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
 
   function generateNext(): Promise<number[]> {
     return new Promise(function (resolve, reject) {
-      const [index, skip] = indexOfNewline(string, 0, true) as number[];
+      const args = indexOfNewline(string, 0, true) as number[];
+      const index = args[0];
+      const skip = args[1];
       if (index >= 0) {
         if (index !== string.length - 1 || string[index] === '\n') return resolve([index, skip]);
       }
@@ -46,7 +48,9 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
     next(): Promise<IteratorResult<string, boolean>> {
       return new Promise(function (resolve, reject) {
         generateNext()
-          .then(function ([index, skip]) {
+          .then(function (args) {
+            const index = args[0];
+            const skip = args[1];
             if (index < 0) {
               if (!string.length) return resolve({ value: undefined, done: true });
               const result: IteratorResult<string, boolean> = { value: string, done: false };
