@@ -67,8 +67,10 @@
     "index-of-newline": "^1.1.8"
   },
   "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.7.1",
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.6.15"
+    "ts-dev-stack": "^0.8.7"
   },
   "engines": {
     "node": ">=0.8"
