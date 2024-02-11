@@ -1,10 +1,15 @@
-"use strict";
+// https://developer.mozilla.org/en-US/docs/Glossary/Base64#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
+/* c8 ignore start */ "use strict";
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-module.exports = void 0;
-/* eslint-disable no-undef */ // https://developer.mozilla.org/en-US/docs/Glossary/Base64#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
-/* c8 ignore start */ var decodeUTF8 = function decode(uint8Array) {
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return _default;
+    }
+});
+var decodeUTF8 = function decode(uint8Array) {
     var sView = "";
     for(var nPart, nLen = uint8Array.length, nIdx = 0; nIdx < nLen; nIdx++){
         nPart = uint8Array[nIdx];
@@ -19,4 +24,9 @@ module.exports = void 0;
     };
 }
 var _default = decodeUTF8;
-module.exports = _default;
+
+if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
+  Object.defineProperty(exports.default, '__esModule', { value: true });
+  for (var key in exports) exports.default[key] = exports[key];
+  module.exports = exports.default;
+}

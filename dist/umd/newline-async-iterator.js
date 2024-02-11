@@ -35,7 +35,7 @@
         ] : -1;
     }
 
-    /* eslint-disable no-undef */ // https://developer.mozilla.org/en-US/docs/Glossary/Base64#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
+    // https://developer.mozilla.org/en-US/docs/Glossary/Base64#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
     /* c8 ignore start */ var decodeUTF8 = function decode(uint8Array) {
         var sView = "";
         for(var nPart, nLen = uint8Array.length, nIdx = 0; nIdx < nLen; nIdx++){
