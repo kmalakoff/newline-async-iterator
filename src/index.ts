@@ -28,7 +28,7 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
   /* c8 ignore stop */
 
   function generateNext(): Promise<number[]> {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       const args = indexOfNewline(string, 0, true) as number[];
       const index = args[0];
       const skip = args[1];
@@ -36,7 +36,7 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
         if (index !== string.length - 1 || string[index] === '\n') return resolve([index, skip]);
       }
       if (done) return resolve([index, skip]);
-      sourceIterator.next().then(function (next) {
+      sourceIterator.next().then((next) => {
         if (next.done) done = true;
         if (next.value !== undefined) string += decodeUTF8(next.value);
         generateNext().then(resolve).catch(reject);
@@ -46,14 +46,17 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
 
   const iterator = {
     next(): Promise<IteratorResult<string, boolean>> {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         generateNext()
-          .then(function (args) {
+          .then((args) => {
             const index = args[0];
             const skip = args[1];
             if (index < 0) {
               if (!string.length) return resolve({ value: undefined, done: true });
-              const result: IteratorResult<string, boolean> = { value: string, done: false };
+              const result: IteratorResult<string, boolean> = {
+                value: string,
+                done: false,
+              };
               string = '';
               return resolve(result);
             }
