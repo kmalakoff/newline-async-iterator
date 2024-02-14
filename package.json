@@ -57,8 +57,7 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "tsds format",
-    "lint": "tsds lint",
+    "format": "biome check --apply-unsafe src/ test/",
     "test": "tsds test:node && tsds test:browser",
     "test:engines": "nvu engines tsds test:node && tsds test:browser",
     "version": "tsds version"
@@ -67,8 +66,11 @@
     "index-of-newline": "^1.1.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.17",
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.6.15"
+    "ts-dev-stack": "^0.9.10"
   },
   "engines": {
     "node": ">=0.8"
