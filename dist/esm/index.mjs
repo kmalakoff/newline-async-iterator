@@ -20,7 +20,7 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
     let done = false;
     /* c8 ignore start */ const sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
     /* c8 ignore stop */ function generateNext() {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject)=>{
             const args = indexOfNewline(string, 0, true);
             const index = args[0];
             const skip = args[1];
@@ -34,7 +34,7 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
                 index,
                 skip
             ]);
-            sourceIterator.next().then(function(next) {
+            sourceIterator.next().then((next)=>{
                 if (next.done) done = true;
                 if (next.value !== undefined) string += decodeUTF8(next.value);
                 generateNext().then(resolve).catch(reject);
@@ -43,8 +43,8 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
     }
     const iterator = {
         next () {
-            return new Promise(function(resolve, reject) {
-                generateNext().then(function(args) {
+            return new Promise((resolve, reject)=>{
+                generateNext().then((args)=>{
                     const index = args[0];
                     const skip = args[1];
                     if (index < 0) {
@@ -75,4 +75,4 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
         };
     }
     return iterator;
-};
+}

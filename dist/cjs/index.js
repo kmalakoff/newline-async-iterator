@@ -2,16 +2,40 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-module.exports = newlineIterator;
-var _indexOfNewline = _interopRequireDefault(require("index-of-newline"));
-var _decodeUTF8Ts = _interopRequireDefault(require("./decodeUTF8.js"));
+Object.defineProperty(exports, /**
+ * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
+ *
+ * @param string The string to iterate through
+ *
+ * ```typescript
+ * import newlineIterator from "newline-async-iterator";
+ *
+ * const iterator = newlineIterator("some\r\nstring\ncombination\r");
+ * const results = [];
+ * for (const line of iterator) results.push(line);
+ * console.log(results); // ["some", "string", "combination"];
+ * ```
+ */ "default", {
+    enumerable: true,
+    get: function() {
+        return newlineIterator;
+    }
+});
+var _indexofnewline = /*#__PURE__*/ _interop_require_default(require("index-of-newline"));
+var _decodeUTF8ts = /*#__PURE__*/ _interop_require_default(require("./decodeUTF8.js"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+var hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
 function newlineIterator(source) {
     var string = "";
     var done = false;
     /* c8 ignore start */ var sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
     /* c8 ignore stop */ function generateNext() {
         return new Promise(function(resolve, reject) {
-            var args = (0, _indexOfNewline).default(string, 0, true);
+            var args = (0, _indexofnewline.default)(string, 0, true);
             var index = args[0];
             var skip = args[1];
             if (index >= 0) {
@@ -26,7 +50,7 @@ function newlineIterator(source) {
             ]);
             sourceIterator.next().then(function(next) {
                 if (next.done) done = true;
-                if (next.value !== undefined) string += (0, _decodeUTF8Ts).default(next.value);
+                if (next.value !== undefined) string += (0, _decodeUTF8ts.default)(next.value);
                 generateNext().then(resolve).catch(reject);
             });
         });
@@ -66,9 +90,9 @@ function newlineIterator(source) {
     }
     return iterator;
 }
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
+
+if ((typeof exports.default === 'function' || (typeof exports.default === 'object' && exports.default !== null)) && typeof exports.default.__esModule === 'undefined') {
+  Object.defineProperty(exports.default, '__esModule', { value: true });
+  for (var key in exports) exports.default[key] = exports[key];
+  module.exports = exports.default;
 }
-var hasIterator = typeof Symbol !== "undefined" && Symbol.asyncIterator;
