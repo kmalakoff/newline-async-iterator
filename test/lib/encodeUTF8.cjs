@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 require('./polyfill.cjs');
 const hasBuffer = typeof Buffer !== 'undefined';
 
