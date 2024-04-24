@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const encodeUTF8 = require('./encodeUTF8.cjs');
 
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
