@@ -1,31 +1,32 @@
-import '../lib/polyfill.cjs';
 import assert from 'assert';
+// @ts-ignore
 import newlineIterator from 'newline-async-iterator';
+import '../lib/polyfill.cjs';
 import stringIterator from '../lib/stringIterator.cjs';
 
 const hasAsync = typeof process !== 'undefined' && +process.versions.node.split('.')[0] > 10;
 
-describe('newline-async-iterator', function () {
-  describe('next', function () {
-    it('all values', function (done) {
+describe('newline-async-iterator', () => {
+  describe('next', () => {
+    it('all values', (done) => {
       const string = 'some\r\nstring\ncombination\r';
       const iterator = newlineIterator(stringIterator(string));
 
       iterator
         .next()
-        .then(function (next) {
+        .then((next) => {
           assert.deepEqual(next, { value: 'some', done: false });
           iterator
             .next()
-            .then(function (next) {
+            .then((next) => {
               assert.deepEqual(next, { value: 'string', done: false });
               iterator
                 .next()
-                .then(function (next) {
+                .then((next) => {
                   assert.deepEqual(next, { value: 'combination', done: false });
                   iterator
                     .next()
-                    .then(function (next) {
+                    .then((next) => {
                       assert.deepEqual(next, { value: undefined, done: true });
                       done();
                     })
@@ -38,16 +39,19 @@ describe('newline-async-iterator', function () {
         .catch(done);
     });
 
-    it('no breaks', function (done) {
+    it('no breaks', (done) => {
       const string = 'somestringcombination';
       const iterator = newlineIterator(stringIterator(string));
       iterator
         .next()
-        .then(function (next) {
-          assert.deepEqual(next, { value: 'somestringcombination', done: false });
+        .then((next) => {
+          assert.deepEqual(next, {
+            value: 'somestringcombination',
+            done: false,
+          });
           iterator
             .next()
-            .then(function (next) {
+            .then((next) => {
               assert.deepEqual(next, { value: undefined, done: true });
               done();
             })
@@ -58,8 +62,8 @@ describe('newline-async-iterator', function () {
   });
 
   !hasAsync ||
-    describe('iterator', function () {
-      it('all values', async function () {
+    describe('iterator', () => {
+      it('all values', async () => {
         const string = 'some\r\nstring\ncombination\r';
         const iterator = newlineIterator(stringIterator(string));
 
@@ -68,7 +72,7 @@ describe('newline-async-iterator', function () {
         assert.deepEqual(results, ['some', 'string', 'combination']);
       });
 
-      it('no breaks', async function () {
+      it('no breaks', async () => {
         const string = 'somestringcombination';
         const iterator = newlineIterator(stringIterator(string));
         const results = [];
