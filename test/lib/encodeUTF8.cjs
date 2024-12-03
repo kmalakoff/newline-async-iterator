@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('./polyfill.cjs');
+require('../polyfills.cjs');
 const hasBuffer = typeof Buffer !== 'undefined';
 
 module.exports = function encodeUTF8(s) {

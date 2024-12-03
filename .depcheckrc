@@ -1,0 +1,1 @@
+ignores: ["newline-async-iterator", "depcheck", "ts-dev-stack", "@types/*", "pinkie-promise"]
