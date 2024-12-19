@@ -69,7 +69,6 @@
     "@biomejs/biome": "^1.9.4",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.10.2",
-    "@web/dev-server-rollup": "^0.6.4",
     "core-js": "^3.39.0",
     "ts-dev-stack": "^1.2.4"
   },
