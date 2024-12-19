@@ -1,7 +1,7 @@
 /**
  * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
  *
- * @param string The string to iterate through
+ * @param source The string to iterate through
  *
  * ```typescript
  * import newlineIterator from "newline-async-iterator";
