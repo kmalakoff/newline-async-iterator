@@ -1,8 +1,9 @@
-const encodeUTF8 = require('./encodeUTF8.cjs');
+// @ts-ignore
+import encodeUTF8 from './encodeUTF8.ts';
 
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 
-module.exports = function stringIterator(string) {
+export default function stringIterator(string) {
   let offset = 0;
   const iterator = {
     next() {
@@ -19,4 +20,4 @@ module.exports = function stringIterator(string) {
   }
 
   return iterator;
-};
+}
