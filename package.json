@@ -42,13 +42,13 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.cjs",
       "types": "./dist/types/index.d.ts"
     },
     "./*": "./*"
   },
-  "main": "dist/cjs/index.js",
-  "unpkg": "dist/umd/newline-async-iterator.js",
+  "main": "dist/cjs/index.cjs",
+  "unpkg": "dist/umd/newline-async-iterator.cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
   "files": [
@@ -57,24 +57,34 @@
   "scripts": {
     "build": "tsds build",
     "deploy": "tsds deploy",
-    "format": "tsds format",
-    "lint": "tsds lint",
-    "test": "tsds test:node && tsds test:browser",
-    "test:engines": "nvu engines tsds test:node && tsds test:browser",
+    "docs": "tsds docs",
+    "format": "biome check --write --unsafe src/ test/",
+    "test": "tsds test:node --no-timeouts && tsds test:browser --config wtr.config.mjs",
+    "test:browser": "tsds test:browser --config wtr.config.mjs",
+    "test:engines": "nvu engines tsds test:node --no-timeouts && tsds test:browser --config wtr.config.mjs",
     "version": "tsds version"
   },
   "dependencies": {
-    "index-of-newline": "^1.1.8"
+    "index-of-newline": "^1.1.10"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.5",
+    "@web/dev-server-import-maps": "^0.2.1",
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.6.15"
+    "tsds-web-test-runner": "^1.11.15"
   },
   "engines": {
     "node": ">=0.8"
   },
   "tsds": {
     "source": "src/index.ts",
+    "targets": [
+      "cjs",
+      "esm",
+      "umd"
+    ],
     "globals": {
       "index-of-newline": "indexOfNewline"
     }

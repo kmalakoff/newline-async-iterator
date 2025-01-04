@@ -1,31 +1,45 @@
-import '../lib/polyfill.cjs';
 import assert from 'assert';
+// @ts-ignore
 import newlineIterator from 'newline-async-iterator';
-import stringIterator from '../lib/stringIterator.cjs';
+import Pinkie from 'pinkie-promise'; // @ts-ignore
+import stringIterator from '../lib/stringIterator.ts';
 
-const hasAsync = typeof process !== 'undefined' && +process.versions.node.split('.')[0] > 10;
+describe('newline-async-iterator', () => {
+  (() => {
+    // patch and restore promise
+    const root = typeof global !== 'undefined' ? global : window;
+    // @ts-ignore
+    let rootPromise: Promise;
+    before(() => {
+      rootPromise = root.Promise;
+      // @ts-ignore
+      root.Promise = Pinkie;
+    });
+    after(() => {
+      root.Promise = rootPromise;
+    });
+  })();
 
-describe('newline-async-iterator', function () {
-  describe('next', function () {
-    it('all values', function (done) {
+  describe('next', () => {
+    it('all values', (done) => {
       const string = 'some\r\nstring\ncombination\r';
       const iterator = newlineIterator(stringIterator(string));
 
       iterator
         .next()
-        .then(function (next) {
+        .then((next) => {
           assert.deepEqual(next, { value: 'some', done: false });
           iterator
             .next()
-            .then(function (next) {
+            .then((next) => {
               assert.deepEqual(next, { value: 'string', done: false });
               iterator
                 .next()
-                .then(function (next) {
+                .then((next) => {
                   assert.deepEqual(next, { value: 'combination', done: false });
                   iterator
                     .next()
-                    .then(function (next) {
+                    .then((next) => {
                       assert.deepEqual(next, { value: undefined, done: true });
                       done();
                     })
@@ -38,16 +52,19 @@ describe('newline-async-iterator', function () {
         .catch(done);
     });
 
-    it('no breaks', function (done) {
+    it('no breaks', (done) => {
       const string = 'somestringcombination';
       const iterator = newlineIterator(stringIterator(string));
       iterator
         .next()
-        .then(function (next) {
-          assert.deepEqual(next, { value: 'somestringcombination', done: false });
+        .then((next) => {
+          assert.deepEqual(next, {
+            value: 'somestringcombination',
+            done: false,
+          });
           iterator
             .next()
-            .then(function (next) {
+            .then((next) => {
               assert.deepEqual(next, { value: undefined, done: true });
               done();
             })
@@ -57,23 +74,22 @@ describe('newline-async-iterator', function () {
     });
   });
 
-  !hasAsync ||
-    describe('iterator', function () {
-      it('all values', async function () {
-        const string = 'some\r\nstring\ncombination\r';
-        const iterator = newlineIterator(stringIterator(string));
+  describe('iterator', () => {
+    it('all values', async () => {
+      const string = 'some\r\nstring\ncombination\r';
+      const iterator = newlineIterator(stringIterator(string));
 
-        const results = [];
-        for await (const line of iterator) results.push(line);
-        assert.deepEqual(results, ['some', 'string', 'combination']);
-      });
-
-      it('no breaks', async function () {
-        const string = 'somestringcombination';
-        const iterator = newlineIterator(stringIterator(string));
-        const results = [];
-        for await (const line of iterator) results.push(line);
-        assert.deepEqual(results, ['somestringcombination']);
-      });
+      const results = [];
+      for await (const line of iterator) results.push(line);
+      assert.deepEqual(results, ['some', 'string', 'combination']);
     });
+
+    it('no breaks', async () => {
+      const string = 'somestringcombination';
+      const iterator = newlineIterator(stringIterator(string));
+      const results = [];
+      for await (const line of iterator) results.push(line);
+      assert.deepEqual(results, ['somestringcombination']);
+    });
+  });
 });
