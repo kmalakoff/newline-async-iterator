@@ -1,6 +1,6 @@
 {
   "name": "newline-async-iterator",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Line-by-line async iterator for the browser and node",
   "keywords": [
     "CR",
