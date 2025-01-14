@@ -66,15 +66,15 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "index-of-newline": "^1.1.21"
+    "index-of-newline": "^1.1.22"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.6",
     "@web/dev-server-import-maps": "^0.2.1",
     "pinkie-promise": "^2.0.1",
-    "tsds-web-test-runner": "^1.13.6"
+    "tsds-web-test-runner": "^1.13.14"
   },
   "engines": {
     "node": ">=0.8"
