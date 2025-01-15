@@ -1,1 +1,1 @@
-ignores: ["@types/*", "newline-async-iterator", "@biomejs/*", "tsds-web-test-runner"]
+ignores: ["newline-async-iterator", "tsds-web-test-runner"]
