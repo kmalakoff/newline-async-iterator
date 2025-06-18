@@ -63,7 +63,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "index-of-newline": "^1.1.31"
+    "index-of-newline": "^1.1.32"
   },
   "devDependencies": {
     "@types/mocha": "*",
