@@ -1,22 +1,19 @@
 import assert from 'assert';
 // @ts-ignore
 import newlineIterator from 'newline-async-iterator';
-import Pinkie from 'pinkie-promise'; // @ts-ignore
+import Pinkie from 'pinkie-promise';
 import stringIterator from '../lib/stringIterator.ts';
 
 describe('newline-async-iterator', () => {
   (() => {
     // patch and restore promise
-    const root = typeof global !== 'undefined' ? global : window;
-    // @ts-ignore
-    let rootPromise: Promise;
+    if (typeof global === 'undefined') return;
+    const globalPromise = global.Promise;
     before(() => {
-      rootPromise = root.Promise;
-      // @ts-ignore
-      root.Promise = Pinkie;
+      global.Promise = Pinkie;
     });
     after(() => {
-      root.Promise = rootPromise;
+      global.Promise = globalPromise;
     });
   })();
 
