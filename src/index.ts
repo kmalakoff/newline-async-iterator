@@ -1,7 +1,10 @@
-import indexOfNewline from 'index-of-newline';
 import decodeUTF8 from './decodeUTF8.ts';
 
-const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
+const REGEX_NEW_LINE = /\r?\n|\r/g;
+
+const root = typeof window === 'undefined' ? global : window;
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Legacy
+const Symbol: SymbolConstructor = typeof root.Symbol === 'undefined' ? ({ asyncIterator: undefined } as unknown as SymbolConstructor) : root.Symbol;
 
 /**
  * Create a newline iterator recognizing CR, LF, and CRLF using the Symbol.asyncIterator interface
@@ -19,60 +22,48 @@ const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
  */
 
 export default function newlineIterator(source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>): AsyncIterableIterator<string> {
-  let string = '';
+  const lines = [];
+  let last = '';
   let done = false;
 
-  /* c8 ignore start */
-  const sourceIterator = hasIterator ? source[Symbol.asyncIterator]() : source;
-  /* c8 ignore stop */
+  const sourceIterator = Symbol.asyncIterator ? source[Symbol.asyncIterator]() : source;
 
-  function generateNext(): Promise<number[]> {
+  function generateNext(): Promise<IteratorResult<string, boolean>> {
     return new Promise((resolve, reject) => {
-      const args = indexOfNewline(string, 0, true) as number[];
-      const index = args[0];
-      const skip = args[1];
-      if (index >= 0) {
-        if (index !== string.length - 1 || string[index] === '\n') return resolve([index, skip]);
-      }
-      if (done) return resolve([index, skip]);
       sourceIterator.next().then((next) => {
         if (next.done) done = true;
-        if (next.value !== undefined) string += decodeUTF8(next.value);
-        generateNext().then(resolve).catch(reject);
+        else last += decodeUTF8(next.value);
+
+        const end = last.length > 0 ? last[last.length - 1] : '';
+        if (done || (end !== '\r' && end !== '\n')) {
+          const moreLines = last.split(REGEX_NEW_LINE);
+          last = moreLines.pop();
+          moreLines.forEach((line) => lines.unshift(line));
+          if (done && last.length > 0) {
+            lines.unshift(last);
+            last = '';
+          }
+        }
+
+        if (lines.length > 0) {
+          const value = lines.pop();
+          if (done && lines.length === 0 && value.length === 0) return resolve({ value: null, done: true });
+          return resolve({ value, done: false });
+        }
+        if (done) return resolve({ value: null, done: true });
+        generateNext().then(resolve).catch(reject); // get more
       });
     });
   }
 
   const iterator = {
     next(): Promise<IteratorResult<string, boolean>> {
-      return new Promise((resolve, reject) => {
-        generateNext()
-          .then((args) => {
-            const index = args[0];
-            const skip = args[1];
-            if (index < 0) {
-              if (!string.length) return resolve({ value: undefined, done: true });
-              const result: IteratorResult<string, boolean> = {
-                value: string,
-                done: false,
-              };
-              string = '';
-              return resolve(result);
-            }
-            const line = string.substr(0, index);
-            string = string.substr(index + skip);
-            return resolve({ value: line, done: false });
-          })
-          .catch(reject);
-      });
+      return generateNext();
+    },
+    [Symbol.asyncIterator](): AsyncIterator<string> {
+      return this;
     },
   };
-
-  if (hasIterator) {
-    iterator[Symbol.asyncIterator] = function (): AsyncIterator<string> {
-      return this;
-    };
-  }
 
   return iterator as AsyncIterableIterator<string>;
 }
