@@ -4,6 +4,8 @@ import newlineIterator from 'newline-async-iterator';
 import Pinkie from 'pinkie-promise';
 import stringIterator from '../lib/stringIterator.ts';
 
+const hasAsyncIterable = typeof Symbol !== 'undefined' && Symbol.asyncIterator !== undefined;
+
 describe('newline-async-iterator', () => {
   (() => {
     // patch and restore promise
@@ -37,7 +39,7 @@ describe('newline-async-iterator', () => {
                   iterator
                     .next()
                     .then((next) => {
-                      assert.deepEqual(next, { value: undefined, done: true });
+                      assert.deepEqual(next, { value: null, done: true });
                       done();
                     })
                     .catch(done);
@@ -62,7 +64,7 @@ describe('newline-async-iterator', () => {
           iterator
             .next()
             .then((next) => {
-              assert.deepEqual(next, { value: undefined, done: true });
+              assert.deepEqual(next, { value: null, done: true });
               done();
             })
             .catch(done);
@@ -72,6 +74,8 @@ describe('newline-async-iterator', () => {
   });
 
   describe('iterator', () => {
+    if (!hasAsyncIterable) return;
+
     it('all values', async () => {
       const string = 'some\r\nstring\ncombination\r';
       const iterator = newlineIterator(stringIterator(string));
