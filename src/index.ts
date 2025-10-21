@@ -38,7 +38,9 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
         if (done || (end !== '\r' && end !== '\n')) {
           const moreLines = last.split(REGEX_NEW_LINE);
           last = moreLines.pop();
-          moreLines.forEach((line) => lines.unshift(line));
+          moreLines.forEach((line) => {
+            lines.unshift(line);
+          });
           if (done && last.length > 0) {
             lines.unshift(last);
             last = '';
