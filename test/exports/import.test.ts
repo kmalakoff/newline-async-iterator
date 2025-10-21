@@ -1,5 +1,4 @@
 import assert from 'assert';
-// @ts-ignore
 import newlineIterator from 'newline-async-iterator';
 import Pinkie from 'pinkie-promise';
 import stringIterator from '../lib/stringIterator.ts';

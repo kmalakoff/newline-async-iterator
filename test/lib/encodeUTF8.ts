@@ -1,7 +1,7 @@
 const hasBuffer = typeof Buffer !== 'undefined';
 
 if (hasBuffer && !Buffer.from) {
-  // @ts-ignore
+  // @ts-expect-error
   Buffer.from = function from(data, encoding) {
     return new Buffer(data, encoding);
   };

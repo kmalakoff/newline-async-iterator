@@ -1,4 +1,3 @@
-// @ts-ignore
 import encodeUTF8 from './encodeUTF8.ts';
 
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
