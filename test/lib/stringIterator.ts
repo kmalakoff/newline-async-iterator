@@ -1,14 +1,33 @@
-import encodeUTF8 from './encodeUTF8.ts';
-
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 
-export default function stringIterator(string) {
+/**
+ * Encode a string to UTF-8 bytes
+ */
+function encodeToUTF8(s: string): Uint8Array {
+  if (typeof TextEncoder !== 'undefined') {
+    return new TextEncoder().encode(s);
+  }
+  // Fallback for environments without TextEncoder
+  if (typeof Buffer !== 'undefined') {
+    return new Uint8Array(Buffer.from(s, 'utf8'));
+  }
+  throw new Error('No UTF-8 encoder available');
+}
+
+/**
+ * Create an async iterator that yields one byte at a time from a UTF-8 encoded string.
+ * This tests the decoder's ability to handle multi-byte UTF-8 sequences split at every byte.
+ */
+export default function stringIterator(string: string) {
+  const bytes = encodeToUTF8(string);
   let offset = 0;
+
   const iterator = {
     next() {
-      if (offset >= string.length) return Promise.resolve({ value: undefined, done: true });
-      const s = string.substring(offset, ++offset);
-      return Promise.resolve({ value: encodeUTF8(s), done: false });
+      if (offset >= bytes.length) return Promise.resolve({ value: undefined, done: true });
+      // Return one byte at a time as a Uint8Array
+      const byte = bytes[offset++];
+      return Promise.resolve({ value: new Uint8Array([byte]), done: false });
     },
   };
 
