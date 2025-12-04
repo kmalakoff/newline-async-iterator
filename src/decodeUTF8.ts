@@ -1,3 +1,5 @@
+import { uint8ArrayToArray } from './compat.ts';
+
 /**
  * Get the expected length of a UTF-8 sequence from its first byte
  */
@@ -51,8 +53,8 @@ function createFallbackDecoder(): (uint8Array: Uint8Array) => string {
 
   return function decode(uint8Array: Uint8Array): string {
     // Combine pending bytes with new input
-    const inputBytes = Array.from(uint8Array);
-    const bytes = pendingBytes.length > 0 ? [...pendingBytes, ...inputBytes] : inputBytes;
+    const inputBytes = uint8ArrayToArray(uint8Array);
+    const bytes = pendingBytes.length > 0 ? pendingBytes.concat(inputBytes) : inputBytes;
     pendingBytes = [];
 
     let result = '';

@@ -1,1 +1,1 @@
-ignores: ["node-version-use", "ts-dev-stack", "@biomejs/biome", "newline-async-iterator", "tsds-web-test-runner"]
+ignores: ["node-version-use", "ts-dev-stack", "newline-async-iterator", "tsds-web-test-runner"]

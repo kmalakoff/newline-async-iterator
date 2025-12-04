@@ -1,3 +1,5 @@
+import { bufferFrom } from './compat.ts';
+
 const hasIterator = typeof Symbol !== 'undefined' && Symbol.asyncIterator;
 
 /**
@@ -7,9 +9,9 @@ function encodeToUTF8(s: string): Uint8Array {
   if (typeof TextEncoder !== 'undefined') {
     return new TextEncoder().encode(s);
   }
-  // Fallback for environments without TextEncoder
+  // Fallback for environments without TextEncoder (old Node)
   if (typeof Buffer !== 'undefined') {
-    return new Uint8Array(Buffer.from(s, 'utf8'));
+    return new Uint8Array(bufferFrom(s, 'utf8'));
   }
   throw new Error('No UTF-8 encoder available');
 }
