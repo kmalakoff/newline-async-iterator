@@ -1,3 +1,5 @@
+import { bufferFrom } from './compat.ts';
+
 /**
  * Create an async iterator that yields chunks of a Uint8Array at specified split points.
  * This allows testing how the decoder handles multi-byte sequences split across chunks.
@@ -44,9 +46,9 @@ export function encodeUTF8(s: string): Uint8Array {
   if (typeof TextEncoder !== 'undefined') {
     return new TextEncoder().encode(s);
   }
-  // Fallback for environments without TextEncoder
+  // Fallback for environments without TextEncoder - use compat bufferFrom
   if (typeof Buffer !== 'undefined') {
-    return new Uint8Array(Buffer.from(s, 'utf8'));
+    return new Uint8Array(bufferFrom(s, 'utf8'));
   }
   throw new Error('No UTF-8 encoder available');
 }
