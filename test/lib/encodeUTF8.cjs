@@ -1,4 +1,4 @@
-const hasBuffer = typeof Buffer !== 'undefined';
+var hasBuffer = typeof Buffer !== 'undefined';
 
 if (hasBuffer && !Buffer.from) {
   Buffer.from = function from(data, encoding) {
@@ -7,5 +7,13 @@ if (hasBuffer && !Buffer.from) {
 }
 
 module.exports = function encodeUTF8(s) {
-  return hasBuffer ? new Uint8Array(Buffer.from(s, 'utf8')) : Uint8Array.from(s, (x) => x.charCodeAt(0));
+  if (hasBuffer) {
+    return new Uint8Array(Buffer.from(s, 'utf8'));
+  }
+  // Fallback for environments without Buffer
+  var arr = [];
+  for (var i = 0; i < s.length; i++) {
+    arr.push(s.charCodeAt(i));
+  }
+  return Uint8Array.from ? Uint8Array.from(arr) : new Uint8Array(arr);
 };
