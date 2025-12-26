@@ -5,9 +5,8 @@
  * Compatible with Node 0.8+ (no Array.from)
  */
 export function uint8ArrayToArray(uint8Array: Uint8Array): number[] {
-  if (typeof Array.from === 'function') {
-    return Array.from(uint8Array);
-  }
+  if (typeof Array.from === 'function') return Array.from(uint8Array);
+
   // Fallback for old environments without Array.from
   const arr: number[] = [];
   for (let i = 0; i < uint8Array.length; i++) {
