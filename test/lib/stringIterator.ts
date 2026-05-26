@@ -20,13 +20,13 @@ function encodeToUTF8(s: string): Uint8Array {
  * Create an async iterator that yields one byte at a time from a UTF-8 encoded string.
  * This tests the decoder's ability to handle multi-byte UTF-8 sequences split at every byte.
  */
-export default function stringIterator(string: string) {
+export default function stringIterator(string: string): AsyncIterator<Uint8Array> {
   const bytes = encodeToUTF8(string);
   let offset = 0;
 
-  const iterator = {
-    next() {
-      if (offset >= bytes.length) return Promise.resolve({ value: undefined, done: true });
+  const iterator: AsyncIterator<Uint8Array> = {
+    next(): Promise<IteratorResult<Uint8Array>> {
+      if (offset >= bytes.length) return Promise.resolve({ value: undefined as unknown as Uint8Array, done: true });
       // Return one byte at a time as a Uint8Array
       const byte = bytes[offset++];
       return Promise.resolve({ value: new Uint8Array([byte]), done: false });
@@ -34,7 +34,7 @@ export default function stringIterator(string: string) {
   };
 
   if (hasIterator) {
-    iterator[Symbol.asyncIterator] = function () {
+    (iterator as AsyncIterableIterator<Uint8Array>)[Symbol.asyncIterator] = function () {
       return this;
     };
   }
