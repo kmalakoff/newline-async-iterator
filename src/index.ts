@@ -23,22 +23,22 @@ const Symbol: SymbolConstructor = typeof root.Symbol === 'undefined' ? ({ asyncI
 
 export default function newlineIterator(source: AsyncIterable<Uint8Array> | AsyncIterator<Uint8Array>): AsyncIterableIterator<string> {
   const decodeUTF8 = createUTF8Decoder();
-  const lines = [];
+  const lines: string[] = [];
   let last = '';
   let done = false;
 
-  const sourceIterator = Symbol.asyncIterator ? source[Symbol.asyncIterator]() : source;
+  const sourceIterator = Symbol.asyncIterator ? (source as AsyncIterable<Uint8Array>)[Symbol.asyncIterator]() : (source as AsyncIterator<Uint8Array>);
 
-  function generateNext(): Promise<IteratorResult<string, boolean>> {
+  function generateNext(): Promise<IteratorResult<string, null>> {
     return new Promise((resolve, reject) => {
-      sourceIterator.next().then((next) => {
+      sourceIterator.next().then((next: IteratorResult<Uint8Array>) => {
         if (next.done) done = true;
-        else last += decodeUTF8(next.value);
+        else last += decodeUTF8(next.value as Uint8Array);
 
         const end = last.length > 0 ? last[last.length - 1] : '';
         if (done || (end !== '\r' && end !== '\n')) {
           const moreLines = last.split(REGEX_NEW_LINE);
-          last = moreLines.pop();
+          last = moreLines.pop() ?? '';
           moreLines.forEach((line) => {
             lines.unshift(line);
           });
@@ -49,7 +49,7 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
         }
 
         if (lines.length > 0) {
-          const value = lines.pop();
+          const value = lines.pop() ?? '';
           if (done && lines.length === 0 && value.length === 0) return resolve({ value: null, done: true });
           return resolve({ value, done: false });
         }
@@ -60,7 +60,7 @@ export default function newlineIterator(source: AsyncIterable<Uint8Array> | Asyn
   }
 
   const iterator = {
-    next(): Promise<IteratorResult<string, boolean>> {
+    next(): Promise<IteratorResult<string, null>> {
       return generateNext();
     },
     [Symbol.asyncIterator](): AsyncIterator<string> {
