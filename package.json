@@ -14,12 +14,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsds build:dist",
+    "build": "tsds build",
     "deploy": "tsds deploy",
     "format": "tsds format",
     "lint": "tsds lint",
     "test": "tsds test:node && tsds test:browser",
-    "test:engines": "tsds test:engines",
     "version": "tsds version"
   },
   "homepage": "https://github.com/kmalakoff/newline-async-iterator#README.md",
@@ -53,11 +52,11 @@
     "symbol.asynciterator"
   ],
   "dependencies": {
-    "index-of-newline": "^1.1.4"
+    "index-of-newline": "^1.1.6"
   },
   "devDependencies": {
     "pinkie-promise": "^2.0.1",
-    "ts-dev-stack": "^0.3.3"
+    "ts-dev-stack": "^0.5.1"
   },
   "engines": {
     "node": ">=0.8"
@@ -70,7 +69,12 @@
     },
     "./*": "./*"
   },
-  "source": "src/index.ts",
+  "tsds": {
+    "source": "src/index.ts",
+    "globals": {
+      "index-of-newline": "indexOfNewline"
+    }
+  },
   "type": "module",
   "types": "dist/types/index.d.ts",
   "unpkg": "dist/umd/newline-async-iterator.js"
