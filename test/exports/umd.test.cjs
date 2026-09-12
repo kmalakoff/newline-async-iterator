@@ -1,9 +1,17 @@
 const Pinkie = require('pinkie-promise');
-const assert = require('assert');
-const newlineIterator = require('newline-async-iterator/dist/umd/newline-async-iterator.cjs');
 const stringIterator = require('../lib/stringIterator.cjs');
 
-describe('exports newline-async-iterator/dist/umd/newline-async-iterator.cjs', () => {
+const assert = require('assert');
+
+let umd = null;
+try {
+  umd = require('newline-async-iterator/umd');
+} catch (_) {
+  umd = require('newline-async-iterator/dist/umd/newline-async-iterator.cjs');
+}
+const newlineAsyncIterator = typeof window !== 'undefined' ? window.newlineAsyncIterator : umd.default || umd;
+
+describe('exports umd', () => {
   (() => {
     // patch and restore promise
     const root = typeof global !== 'undefined' ? global : window;
@@ -19,7 +27,7 @@ describe('exports newline-async-iterator/dist/umd/newline-async-iterator.cjs', (
   })();
 
   it('first newline', (done) => {
-    const iterator = newlineIterator(stringIterator('some\r\nstring\ncombination\r'));
+    const iterator = newlineAsyncIterator(stringIterator('some\r\nstring\ncombination\r'));
     iterator
       .next()
       .then((next) => {
