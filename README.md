@@ -2,21 +2,23 @@
 
 Line-by-line async iterator for the browser and node
 
-### Example 1: Parse json line by line
+```sh
+npm install newline-async-iterator
+```
 
-```typescript
+### Parse lines from byte chunks
+
+```js
 import newlineIterator from "newline-async-iterator";
-import "isomorphic-fetch";
-import responseIterator from "response-iterator";
 
-const res = await fetch(
-  "https://raw.githubusercontent.com/kmalakoff/newline-async-iterator/master/package.json",
-);
+async function* chunks() {
+  yield new TextEncoder().encode("some\r\nstring\ncombination");
+}
 
 const lines = [];
-for await (const line of newlineIterator(responseIterator<Uint8Array>(res)))
+for await (const line of newlineIterator(chunks()))
   lines.push(line);
-console.log(JSON.parse(lines.join("\r\n")).name); // "newline-async-iterator"
+console.log(lines); // ["some", "string", "combination"]
 ```
 
 ### Documentation

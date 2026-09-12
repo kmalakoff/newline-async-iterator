@@ -1,1 +1,1 @@
-ignores: ["node-version-use", "ts-dev-stack", "newline-async-iterator", "tsds-web-test-runner"]
+ignores: ["newline-async-iterator", "node-version-use", "ts-dev-stack", "tsds-web-test-runner"]
