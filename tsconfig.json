@@ -3,6 +3,7 @@
   "compilerOptions": {
     "lib": ["es2015", "dom", "esnext.asynciterable"],
     "types": ["mocha", "node"],
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "dist"],
