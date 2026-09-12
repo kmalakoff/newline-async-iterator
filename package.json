@@ -56,14 +56,14 @@
     "build": "tsds build",
     "deploy": "tsds deploy",
     "docs": "tsds docs",
-    "format": "biome check --write --unsafe src/ test/",
+    "format": "biome check --write --unsafe",
     "test": "tsds test:browser --config wtr.config.mjs && tsds test:node --no-timeouts",
     "test:browser": "tsds test:browser --config wtr.config.mjs",
     "test:engines": "tsds test:browser --config wtr.config.mjs && nvu engines tsds test:node --no-timeouts",
     "version": "tsds version"
   },
   "dependencies": {
-    "index-of-newline": "^1.1.31"
+    "index-of-newline": "^1.1.32"
   },
   "devDependencies": {
     "@types/mocha": "*",
